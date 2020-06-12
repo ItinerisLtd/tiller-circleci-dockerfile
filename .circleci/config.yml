@@ -1,0 +1,42 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@1
+
+jobs:
+  dockerlint:
+    executor: docker/machine
+    steps:
+      - checkout
+      - docker/dockerlint:
+          dockerfile: ~/project/base/Dockerfile
+      - docker/dockerlint:
+          dockerfile: ~/project/node/Dockerfile
+
+  make:
+    executor: docker/docker
+    steps:
+      - checkout
+      - setup_remote_docker
+      - when:
+          equal: [ master, << pipeline.git.branch >> ]
+          steps:
+            - docker/check
+            - run: make -j2 docker-push
+      - unless:
+          equal: [ master, << pipeline.git.branch >> ]
+          steps:
+            - run: make -j2 docker-build
+
+workflows:
+  lint-make:
+    jobs:
+      - dockerlint
+      - docker/hadolint:
+          name: hadolint
+          dockerfiles: base/Dockerfile,node/Dockerfile
+          ignore-rules: 'DL3004,DL3013'
+      - make:
+          requires:
+            - dockerlint
+            - hadolint
