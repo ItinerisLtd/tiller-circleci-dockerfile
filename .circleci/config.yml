@@ -31,7 +31,6 @@ jobs:
       - when:
           condition: << parameters.push-stable >>
           steps:
-            - run: make -j3 docker-push
             - run: make -j3 docker-push-stable
 
 workflows:
