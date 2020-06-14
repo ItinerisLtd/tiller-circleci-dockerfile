@@ -19,17 +19,19 @@ jobs:
       - checkout
       - setup_remote_docker
       - docker/check
-      - run:
-          name: Push docker images with short commit sha tags
-          command: make -j3 VERSION=$(echo << pipeline.git.revision >> | cut -c -7) docker-push
+      - unless:
+          condition:
+            and:
+              - equal: [ master, << pipeline.git.branch >> ]
+          steps:
+            - run: make -j3 VERSION=$(echo << pipeline.git.revision >> | cut -c -7) docker-push
       - when:
           condition:
             and:
               - equal: [ master, << pipeline.git.branch >> ]
           steps:
-            - run:
-                name: Push docker images with naked and date tags
-                command: make -j3 docker-push-stable
+            - run: make -j3 docker-push
+            - run: make -j3 docker-push-stable
 
 workflows:
   lint-push: &lint-push
