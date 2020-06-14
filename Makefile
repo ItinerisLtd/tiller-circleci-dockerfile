@@ -23,4 +23,4 @@ docker-push-node-%: docker-build-node-% docker-push-base
 	docker push ${IMAGE_NAME}:node-$*-${VERSION}
 
 docker-push-node-%-stable: docker-build-node-% docker-push-base
-	docker push ${IMAGE_NAME}:node
+	docker push ${IMAGE_NAME}:node-$*
