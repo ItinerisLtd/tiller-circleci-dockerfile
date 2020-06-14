@@ -13,30 +13,38 @@ jobs:
       - docker/dockerlint:
           dockerfile: ~/project/node/Dockerfile
 
-  make:
+  push:
     executor: docker/docker
     steps:
       - checkout
       - setup_remote_docker
+      - docker/check
+      - run:
+          name: Push docker images with short commit sha tags
+          command: make -j2 VERSION=$(echo << pipeline.git.revision >> | cut -c -7) docker-push
       - when:
           equal: [ master, << pipeline.git.branch >> ]
           steps:
-            - docker/check
-            - run: make -j2 docker-push
-      - unless:
-          equal: [ master, << pipeline.git.branch >> ]
-          steps:
-            - run: make -j2 docker-build
+            - run:
+                name: Push docker images with naked and date tags
+                command: make -j2 docker-push-stable
 
 workflows:
-  lint-make:
+  lint-push: &lint-push
     jobs:
       - dockerlint
       - docker/hadolint:
           name: hadolint
           dockerfiles: base/Dockerfile,node/Dockerfile
           ignore-rules: 'DL3004,DL3013'
-      - make:
-          requires:
-            - dockerlint
-            - hadolint
+      - push
+
+  weekly-lint-push:
+    <<: *lint-push
+    triggers:
+      - schedule:
+          # Weekly on Monday
+          cron: "0 0 * * 1"
+          filters:
+            branches:
+              only: master
