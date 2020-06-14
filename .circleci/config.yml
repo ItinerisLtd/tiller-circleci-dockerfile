@@ -21,7 +21,7 @@ jobs:
       - docker/check
       - run:
           name: Push docker images with short commit sha tags
-          command: make -j2 VERSION=$(echo << pipeline.git.revision >> | cut -c -7) docker-push
+          command: make -j3 VERSION=$(echo << pipeline.git.revision >> | cut -c -7) docker-push
       - when:
           condition:
             and:
@@ -29,7 +29,7 @@ jobs:
           steps:
             - run:
                 name: Push docker images with naked and date tags
-                command: make -j2 docker-push-stable
+                command: make -j3 docker-push-stable
 
 workflows:
   lint-push: &lint-push
