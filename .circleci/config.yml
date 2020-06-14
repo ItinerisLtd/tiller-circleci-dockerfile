@@ -23,7 +23,9 @@ jobs:
           name: Push docker images with short commit sha tags
           command: make -j2 VERSION=$(echo << pipeline.git.revision >> | cut -c -7) docker-push
       - when:
-          equal: [ master, << pipeline.git.branch >> ]
+          condition:
+            and:
+              - equal: [ master, << pipeline.git.branch >> ]
           steps:
             - run:
                 name: Push docker images with naked and date tags
