@@ -37,7 +37,10 @@ workflows:
           name: hadolint
           dockerfiles: base/Dockerfile,node/Dockerfile
           ignore-rules: 'DL3004,DL3013'
-      - push
+      - push:
+          requires:
+            - dockerlint
+            - hadolint
 
   weekly-lint-push:
     <<: *lint-push
