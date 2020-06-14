@@ -49,6 +49,19 @@ workflows:
           requires:
             - dockerlint
             - hadolint
+          filters:
+            branches:
+              ignore: master
+      - push:
+          name: push-stable
+          push-sha: true
+          push-stable: true
+          requires:
+            - dockerlint
+            - hadolint
+          filters:
+            branches:
+              only: master
 
   weekly-lint-push-stable:
     jobs:
@@ -58,7 +71,7 @@ workflows:
           dockerfiles: base/Dockerfile,node/Dockerfile
           ignore-rules: 'DL3004,DL3013'
       - push:
-          name: weekly-push
+          name: weekly-push-stable
           push-sha: false
           push-stable: true
           requires:
