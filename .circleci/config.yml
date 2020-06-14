@@ -14,27 +14,28 @@ jobs:
           dockerfile: ~/project/node/Dockerfile
 
   push:
+    parameters:
+      push-sha:
+        type: boolean
+      push-stable:
+        type: boolean
     executor: docker/docker
     steps:
       - checkout
       - setup_remote_docker
       - docker/check
-      - unless:
-          condition:
-            and:
-              - equal: [ master, << pipeline.git.branch >> ]
+      - when:
+          condition: << parameters.push-sha >>
           steps:
             - run: make -j3 VERSION=$(echo << pipeline.git.revision >> | cut -c -7) docker-push
       - when:
-          condition:
-            and:
-              - equal: [ master, << pipeline.git.branch >> ]
+          condition: << parameters.push-stable >>
           steps:
             - run: make -j3 docker-push
             - run: make -j3 docker-push-stable
 
 workflows:
-  lint-push: &lint-push
+  lint-push-sha: &lint-push
     jobs:
       - dockerlint
       - docker/hadolint:
@@ -42,12 +43,27 @@ workflows:
           dockerfiles: base/Dockerfile,node/Dockerfile
           ignore-rules: 'DL3004,DL3013'
       - push:
+          name: push
+          push-sha: true
+          push-stable: false
           requires:
             - dockerlint
             - hadolint
 
-  weekly-lint-push:
-    <<: *lint-push
+  weekly-lint-push-stable:
+    jobs:
+      - dockerlint
+      - docker/hadolint:
+          name: hadolint
+          dockerfiles: base/Dockerfile,node/Dockerfile
+          ignore-rules: 'DL3004,DL3013'
+      - push:
+          name: weekly-push
+          push-sha: false
+          push-stable: true
+          requires:
+            - dockerlint
+            - hadolint
     triggers:
       - schedule:
           # Weekly on Monday
