@@ -39,7 +39,7 @@ workflows:
       - dockerlint
       - docker/hadolint:
           name: hadolint
-          dockerfiles: base/Dockerfile,node/Dockerfile
+          dockerfiles: base/Dockerfile:node/Dockerfile
           ignore-rules: 'DL3004,DL3013'
       - push:
           name: push
@@ -67,7 +67,7 @@ workflows:
       - dockerlint
       - docker/hadolint:
           name: hadolint
-          dockerfiles: base/Dockerfile,node/Dockerfile
+          dockerfiles: base/Dockerfile:node/Dockerfile
           ignore-rules: 'DL3004,DL3013'
       - push:
           name: weekly-push-stable
