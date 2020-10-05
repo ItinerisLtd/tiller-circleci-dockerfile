@@ -10,16 +10,16 @@ RUN sudo apt-get -q update && \
     sudo apt-get clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # For Trellis CLI, specifically: `trellis init`
-RUN pip3 install --no-cache-dir virtualenv
+RUN pip install --no-cache-dir virtualenv
 
 # Trellis CLI
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -sL https://roots.io/trellis/cli/get | bash -s -- -d -b ~/bin
 
 # # Basic smoke test
-RUN echo "python3 --version" && python3 --version && \
-    echo "pip3 --version" && pip3 --version && \
-    echo "pip3 check" && pip3 check && \
+RUN echo "python --version" && python --version && \
+    echo "pip --version" && pip --version && \
+    echo "pip check" && pip check && \
     echo "virtualenv --version" && virtualenv --version && \
     echo "rsync --version" && rsync --version && \
     echo "trellis --version" && trellis --version
