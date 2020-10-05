@@ -78,8 +78,8 @@ workflows:
             - hadolint
     triggers:
       - schedule:
-          # Weekly on Monday
-          cron: "0 0 * * 1"
+          # Weekly on Wednesday
+          cron: "0 0 * * 3"
           filters:
             branches:
               only: master
