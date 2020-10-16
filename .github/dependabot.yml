@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: docker
+    directory: "base"
+    schedule:
+      interval: daily
+      time: "1948"
+      timezone: Europe/London
+
+  - package-ecosystem: docker
+    directory: "node"
+    schedule:
+      interval: daily
+      time: "1948"
+      timezone: Europe/London
