@@ -1,6 +1,4 @@
-ARG PYTHON_MINOR_VERSION=3.8
-
-FROM "cimg/python:${PYTHON_MINOR_VERSION}"
+FROM cimg/python:3.8
 
 ARG DEBIAN_FRONTEND=noninteractive
 

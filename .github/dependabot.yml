@@ -4,12 +4,8 @@ updates:
     directory: "base"
     schedule:
       interval: daily
-      time: "19:50"
-      timezone: Europe/London
 
   - package-ecosystem: docker
     directory: "node"
     schedule:
       interval: daily
-      time: "19:50"
-      timezone: Europe/London
