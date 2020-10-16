@@ -19,15 +19,5 @@ RUN pip install --no-cache-dir virtualenv
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -sL https://roots.io/trellis/cli/get | bash -s -- -d -b ~/bin
 
-# # Basic smoke test
-RUN echo "python --version" && python --version && \
-    echo "which python" && \
-    echo "/usr/bin/python --version" && \
-    echo "pip --version" && pip --version && \
-    echo "pip check" && pip check && \
-    echo "virtualenv --version" && virtualenv --version && \
-    echo "rsync --version" && rsync --version && \
-    echo "trellis --version" && trellis --version
-
 # Define default command.
 CMD ["bash"]

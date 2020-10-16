@@ -10,9 +10,11 @@ docker-push-stable: docker-push-base-stable docker-push-node-10-stable docker-pu
 
 docker-build-base:
 	docker build --tag ${IMAGE_NAME}:base --tag ${IMAGE_NAME}:base-${DATE} --tag ${IMAGE_NAME}:base-${VERSION} base
+	docker run --rm -v $(shell pwd)/base:/tmp-base -w /tmp-base ${IMAGE_NAME}:base bash smoke-test.sh
 
 docker-build-node-%: docker-build-base
 	docker build --tag ${IMAGE_NAME}:node-$* --tag ${IMAGE_NAME}:node-$*-${DATE} --tag ${IMAGE_NAME}:node-$*-${VERSION} --build-arg NODE_MAJOR_VERSION=$* node
+	docker run --rm -v $(shell pwd)/node:/tmp-node -w /tmp-node ${IMAGE_NAME}:node-$* bash smoke-test.sh
 
 docker-push-base: docker-build-base
 	docker push ${IMAGE_NAME}:base-${VERSION}
