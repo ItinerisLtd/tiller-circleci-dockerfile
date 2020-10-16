@@ -19,10 +19,9 @@ jobs:
         type: boolean
       push-stable:
         type: boolean
-    executor: docker/docker
+    executor: docker/machine
     steps:
       - checkout
-      - setup_remote_docker
       - docker/check
       - when:
           condition: << parameters.push-sha >>

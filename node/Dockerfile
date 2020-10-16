@@ -18,10 +18,5 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - && \
     sudo apt-get install -y --no-install-recommends yarn && \
     sudo apt-get clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Basic smoke test
-RUN echo "node --version" && node --version && \
-    echo "npm --version" && npm --version && \
-    echo "yarn versions" && yarn versions
-
 # Define default command.
 CMD ["bash"]
