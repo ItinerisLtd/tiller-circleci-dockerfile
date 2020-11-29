@@ -1,4 +1,4 @@
-FROM cimg/python:3.9.0
+FROM cimg/python:3.9
 
 ARG DEBIAN_FRONTEND=noninteractive
 
