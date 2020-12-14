@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir virtualenv
 
 # Trellis CLI
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN curl -sL https://roots.io/trellis/cli/get | bash -s -- -d -b ~/bin
+RUN curl -sL https://raw.githubusercontent.com/roots/trellis-cli/master/scripts/get | bash -s -- -d -b ~/bin
 
 # Define default command.
 CMD ["bash"]
