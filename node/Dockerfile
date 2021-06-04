@@ -3,7 +3,7 @@ ARG TILLER_CIRCLECI_BASE_IMAGE_TAG=base
 FROM "itinerisltd/tiller-circleci:${TILLER_CIRCLECI_BASE_IMAGE_TAG}"
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG NODE_MAJOR_VERSION=12
+ARG NODE_MAJOR_VERSION=16
 
 # Node.js
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
